@@ -1,26 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NextFunction, Request, Response } from "express"
+import { Response } from "express"
 import { envVars } from "../config/env"
 import AppError from "../errorHelpers/AppError"
 
-export const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const globalErrorHandler = (error: any, res: Response) => {
 
     let statusCode = 500
-    let message = "Something Went Wrong!!"
+    let message = "Something Went Wrong From Global Error Handler!!"
 
-    if (err instanceof AppError) {
-        statusCode = err.statusCode
-        message = err.message
-    } else if (err instanceof Error) {
+    if (error instanceof AppError) {
+        statusCode = error.statusCode
+        message = error.message
+    } else if (error instanceof Error) {
         statusCode = 500;
-        message = err.message
+        message = error.message
     }
 
     res.status(statusCode).json({
         success: false,
         message,
-        err,
-        stack: envVars.NODE_ENV === "development" ? err.stack : null
+        stack: envVars.NODE_ENV === "development" ? error.stack : null
     })
 }
