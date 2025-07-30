@@ -1,31 +1,29 @@
 import { Router } from "express";
-import { validateRequest } from "../../middlewares/validateRequest";
-import { createDivisionZodSchema } from "./division.validation";
-import { DivControllers } from "./division.controller";
 import { checkAuth } from "../../middlewares/checkAuth";
+import { validateRequest } from "../../middlewares/validateRequest";
 import { Role } from "../user/user.interface";
+import { DivisionController } from "./division.controller";
+import {
+    createDivisionSchema,
+    updateDivisionSchema,
+} from "./division.validation";
 
-const router = Router();
+const router = Router()
+
 router.post(
-  "/create",
-  checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
-  validateRequest(createDivisionZodSchema),
-  DivControllers.createDiv
+    "/create",
+    checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
+    validateRequest(createDivisionSchema),
+    DivisionController.createDivision
 );
-router.get(
-  "/",
-  DivControllers.getDiv
-);
+router.get("/", DivisionController.getAllDivisions);
+router.get("/:slug", DivisionController.getSingleDivision)
 router.patch(
-  "/:id",
-  checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
-  validateRequest(createDivisionZodSchema),
-  DivControllers.updateDiv
+    "/:id",
+    checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
+    validateRequest(updateDivisionSchema),
+    DivisionController.updateDivision
 );
-router.delete(
-  "/:id",
-  checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
-  DivControllers.deleteDiv
-);
+router.delete("/:id", checkAuth(Role.ADMIN, Role.SUPER_ADMIN), DivisionController.deleteDivision);
 
-export const DivRoutes = router;
+export const DivisionRoutes = router

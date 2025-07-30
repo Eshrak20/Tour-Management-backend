@@ -1,47 +1,44 @@
 import { z } from "zod";
-import { Types } from "mongoose";
 
-export const tourCreateZodSchema = z.object({
-  title: z.string().min(1, { message: "Title is required" }),
-  slug: z.string().min(1, { message: "Slug is required" }),
-  description: z.string().optional(),
-  images: z.array(z.string()).optional(),
-  location: z.string().optional(),
-  costFrom: z.number().optional(),
-  startDate: z.coerce.date().optional(),
-  endDate: z.coerce.date().optional(),
-  included: z.array(z.string()).optional(),
-  excluded: z.array(z.string()).optional(),
-  amenities: z.array(z.string()).optional(),
-  tourPlan: z.array(z.string()).optional(),
-  maxGuest: z.number().optional(),
-  minAge: z.number().optional(),
-  division: z.string().refine(val => Types.ObjectId.isValid(val), {
-    message: "Invalid Division ID"
-  }),
-  tourType: z.string().refine(val => Types.ObjectId.isValid(val), {
-    message: "Invalid TourType ID"
-  })
+
+
+export const createTourZodSchema = z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    location: z.string().optional(),
+    costFrom: z.number().optional(),
+    startDate: z.string().optional().optional(),
+    endDate: z.string().optional().optional(),
+    tourType: z.string(),// <- changed here
+    included: z.array(z.string()).optional(),
+    excluded: z.array(z.string()).optional(),
+    amenities: z.array(z.string()).optional(),
+    tourPlan: z.array(z.string()).optional(),
+    maxGuest: z.number().optional(),
+    minAge: z.number().optional(),
+    division: z.string(),
+    departureLocation: z.string().optional(),
+    arrivalLocation: z.string().optional()
 });
-export const tourUpdateZodSchema = z.object({
-  title: z.string().min(1, { message: "Title is required" }).optional(),
-  slug: z.string().min(1, { message: "Slug is required" }).optional(),
-  description: z.string().optional(),
-  images: z.array(z.string()).optional(),
-  location: z.string().optional(),
-  costFrom: z.number().optional(),
-  startDate: z.coerce.date().optional(),
-  endDate: z.coerce.date().optional(),
-  included: z.array(z.string()).optional(),
-  excluded: z.array(z.string()).optional(),
-  amenities: z.array(z.string()).optional(),
-  tourPlan: z.array(z.string()).optional(),
-  maxGuest: z.number().optional(),
-  minAge: z.number().optional(),
-  division: z.string().refine(val => Types.ObjectId.isValid(val), {
-    message: "Invalid Division ID"
-  }).optional(),
-  tourType: z.string().refine(val => Types.ObjectId.isValid(val), {
-    message: "Invalid TourType ID"
-  }).optional(),
+
+export const updateTourZodSchema = z.object({
+    title: z.string().optional(),
+    description: z.string().optional(),
+    location: z.string().optional(),
+    costFrom: z.number().optional(),
+    startDate: z.string().optional().optional(),
+    endDate: z.string().optional().optional(),
+    tourType: z.string().optional(),// <- changed here
+    included: z.array(z.string()).optional(),
+    excluded: z.array(z.string()).optional(),
+    amenities: z.array(z.string()).optional(),
+    tourPlan: z.array(z.string()).optional(),
+    maxGuest: z.number().optional(),
+    minAge: z.number().optional(),
+    departureLocation: z.string().optional(),
+    arrivalLocation: z.string().optional()
+});
+
+export const createTourTypeZodSchema = z.object({
+    name: z.string(),
 });
